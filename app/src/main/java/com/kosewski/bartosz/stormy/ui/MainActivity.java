@@ -313,16 +313,24 @@ public class MainActivity extends AppCompatActivity implements LocationProvider.
 
     @OnClick(R.id.dailyButton)
         public void startDailyActivity(View view) {
-            Intent intent = new Intent(this, DailyForecastActivity.class);
-            intent.putExtra(DAILY_FORECAST, mForecast.getDailyForecast());
-            intent.putExtra(LOCATION, mLocationName);
-            startActivity(intent);
+            if(mForecast != null) {
+                Intent intent = new Intent(this, DailyForecastActivity.class);
+                intent.putExtra(DAILY_FORECAST, mForecast.getDailyForecast());
+                intent.putExtra(LOCATION, mLocationName);
+                startActivity(intent);
+            } else {
+                Toast.makeText(MainActivity.this, "Just a second, weather data is being gathered", Toast.LENGTH_SHORT).show();
+            }
         }
 
     @OnClick(R.id.hourlyButton)
         public void startHourlyActivity(View view) {
-            Intent intent = new Intent(this, HourlyForecastActivity.class);
-            intent.putExtra(HOURLY_FORECAST, mForecast.getHourlyForecast());
-            startActivity(intent);
+            if(mForecast != null) {
+                Intent intent = new Intent(this, HourlyForecastActivity.class);
+                intent.putExtra(HOURLY_FORECAST, mForecast.getHourlyForecast());
+                startActivity(intent);
+            } else {
+                Toast.makeText(MainActivity.this, "Just a second, weather data is being gathered", Toast.LENGTH_SHORT).show();
+            }
     }
 }
