@@ -180,4 +180,16 @@
             android:textColor="#ffffff"/>
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sorry, we need to know your location to gather weather data for you. Please update app permissions"
+        android:id="@+id/permisonLabel"
+        android:textColor="#ffffff"
+        android:textSize="15dp"
+        android:layout_above="@+id/temperatureLabel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:visibility="invisible"/>
+
 </RelativeLayout>
