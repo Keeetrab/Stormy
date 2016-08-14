@@ -74,9 +74,9 @@ public class MainActivity extends AppCompatActivity implements LocationProvider.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        GetLocationPermision();
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
 
         mProgressBar.setVisibility(View.INVISIBLE);
         mProgressBar.getIndeterminateDrawable().setColorFilter(0xFFFFFFFF, android.graphics.PorterDuff.Mode.SRC_IN);
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements LocationProvider.
         mLocationProvider = new LocationProvider(this, this);
 
         Log.i(TAG, "Latitude: " + mLatitude + " Longitude: " + mLongitude);
-
+        GetLocationPermission();
 
         mRefreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -273,24 +273,25 @@ public class MainActivity extends AppCompatActivity implements LocationProvider.
 
         List<Address> addresses = geocoder.getFromLocation(mLatitude, mLongitude ,1);
         String city = "";
-        if (addresses.get(0).getLocality() != null){
-            city = addresses.get(0).getLocality();
-            Log.i(TAG, "getlocality ");
-        } else {
-            city = addresses.get(0).getSubAdminArea();
-            Log.i(TAG, "getSubAdminArea ");
+        if(addresses.size() != 0) {
+            if (addresses.get(0).getLocality() != null) {
+                city = addresses.get(0).getLocality();
+                Log.i(TAG, "getlocality ");
+            } else {
+                city = addresses.get(0).getSubAdminArea();
+                Log.i(TAG, "getSubAdminArea ");
+            }
+
+
+            String country = addresses.get(0).getCountryName();
+            mLocationName = "" + city + ", " + country;
+
+
+            Log.i(TAG, "Location " + mLocationName);
+            current.setLocation(mLocationName);
+
+            Log.d(TAG, current.getFormattedTime());
         }
-
-
-        String country = addresses.get(0).getCountryName();
-        mLocationName = "" + city +", " + country;
-
-
-        Log.i(TAG, "Location " + mLocationName);
-        current.setLocation(mLocationName);
-
-        Log.d(TAG, current.getFormattedTime());
-
         return current;
 
     }
@@ -342,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements LocationProvider.
             }
     }
 
-    private void GetLocationPermision(){
+    private void GetLocationPermission(){
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -351,6 +352,8 @@ public class MainActivity extends AppCompatActivity implements LocationProvider.
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                         MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
 
+        } else {
+            mLocationProvider.connect();
         }
     }
 

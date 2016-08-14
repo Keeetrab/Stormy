@@ -13,9 +13,6 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-/**
- * Created by Bartosz on 05.10.2015.
- */
 
     public class LocationProvider implements
         GoogleApiClient.ConnectionCallbacks,
@@ -72,6 +69,7 @@ import com.google.android.gms.location.LocationServices;
         public void onConnected(Bundle bundle) {
             Log.i(TAG, "Location services connected.");
 
+            //Permision checked before
             Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (location == null) {
                 LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
